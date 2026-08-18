@@ -1,0 +1,100 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Breadcrumbs from "@components/astro/Breadcrumbs.astro";
+import SectionHeading from "@components/astro/SectionHeading.astro";
+import CTA from "@components/astro/CTA.astro";
+import Icon from "@components/astro/Icon.astro";
+import { caseStudies } from "@data/caseStudies";
+import { siteMeta } from "@config/business";
+import { buildBreadcrumbSchema } from "@utils/seo";
+
+const canonical = new URL("/case-studies", siteMeta.siteUrl).toString();
+const breadcrumbItems = [{ name: "Home", href: "/" }, { name: "Case Studies" }];
+const structuredData = [
+  buildBreadcrumbSchema([
+    { name: "Home", url: siteMeta.siteUrl },
+    { name: "Case Studies", url: canonical },
+  ]),
+];
+---
+
+<Layout
+  title={`Case Studies | ${siteMeta.siteName}`}
+  description="Fictional demo case studies showing how ArcticAir Pro Services approaches office efficiency upgrades, residential cooling restoration and restaurant HVAC maintenance."
+  canonical={canonical}
+  structuredData={structuredData}
+>
+  <section class="border-b border-mist-200 bg-navy-950 py-16 sm:py-20">
+    <div class="container-wide">
+      <Breadcrumbs dark items={breadcrumbItems} />
+      <div class="mt-6 max-w-2xl">
+        <SectionHeading
+          eyebrow="Case Studies"
+          title="Portfolio-style project breakdowns"
+          description="Fictional demo case studies illustrating problem, solution and result — built to show the kind of client-facing content ArcticAir Pro could publish."
+          dark
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide space-y-20 py-16 sm:py-20">
+    {caseStudies.map((cs, index) => (
+      <article id={cs.slug} class="scroll-mt-28 border-b border-mist-200 pb-16 last:border-b-0 last:pb-0">
+        <div class:list={["grid gap-10 lg:grid-cols-2 lg:items-center", index % 2 === 1 && "lg:[&>*:first-child]:order-2"]}>
+          <div data-reveal>
+            <span class="eyebrow">
+              <span class="h-1.5 w-1.5 rounded-full bg-accent-500"></span>
+              {cs.category.charAt(0).toUpperCase() + cs.category.slice(1)}
+            </span>
+            <h2 class="mt-4 text-2xl font-semibold text-navy-900 sm:text-3xl">{cs.title}</h2>
+            <p class="mt-1 text-sm font-medium text-mist-500">{cs.client}</p>
+
+            <div class="mt-6 space-y-5">
+              <div>
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-mist-500">Problem</h3>
+                <p class="mt-1.5 text-sm leading-relaxed text-mist-700">{cs.problem}</p>
+              </div>
+              <div>
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-mist-500">Solution</h3>
+                <p class="mt-1.5 text-sm leading-relaxed text-mist-700">{cs.solution}</p>
+              </div>
+              <div>
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-mist-500">Services Used</h3>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  {cs.services.map((s) => (
+                    <span class="rounded-full bg-ice-50 px-3 py-1 text-xs font-medium text-navy-700">{s}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-3 gap-3 rounded-lg border border-mist-200 bg-mist-50 p-4">
+              {cs.metrics.map((m) => (
+                <div>
+                  <p class="text-lg font-bold text-navy-900">{m.value}</p>
+                  <p class="text-[0.68rem] leading-tight text-mist-500">{m.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div class="mt-5 flex items-start gap-2.5 rounded-lg bg-navy-950 p-4 text-sm text-ice-100/80">
+              <Icon name="badge" class="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-400" />
+              <p><span class="font-semibold text-white">Result:</span> {cs.result}</p>
+            </div>
+          </div>
+
+          <div class="grid gap-4" data-reveal data-reveal-delay="1">
+            {cs.gallery.map((img) => (
+              <div class="aspect-[16/10] overflow-hidden rounded-xl border border-mist-200">
+                <img src={img.src} alt={img.alt} class="h-full w-full object-cover" loading="lazy" decoding="async" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <CTA title="Want results like these for your space?" description="Talk to our team about a tailored service plan." />
+</Layout>

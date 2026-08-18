@@ -1,0 +1,47 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Breadcrumbs from "@components/astro/Breadcrumbs.astro";
+import SectionHeading from "@components/astro/SectionHeading.astro";
+import ServiceCard from "@components/astro/ServiceCard.astro";
+import CTA from "@components/astro/CTA.astro";
+import { services } from "@data/services";
+import { siteMeta } from "@config/business";
+import { buildBreadcrumbSchema } from "@utils/seo";
+
+const canonical = new URL("/services", siteMeta.siteUrl).toString();
+const breadcrumbItems = [{ name: "Home", href: "/" }, { name: "Services" }];
+const structuredData = [
+  buildBreadcrumbSchema([
+    { name: "Home", url: siteMeta.siteUrl },
+    { name: "Services", url: canonical },
+  ]),
+];
+---
+
+<Layout
+  title={`AC & HVAC Services | ${siteMeta.siteName}`}
+  description="Explore ArcticAir Pro Services' full range of AC and HVAC services: installation, repair, maintenance, deep cleaning, gas refill, duct cleaning, commercial HVAC and emergency service."
+  canonical={canonical}
+  structuredData={structuredData}
+>
+  <section class="border-b border-mist-200 bg-navy-950 py-14 sm:py-16">
+    <div class="container-wide">
+      <Breadcrumbs dark items={breadcrumbItems} />
+      <SectionHeading
+        eyebrow="Our Services"
+        title="Every AC service, one trusted team"
+        description="Residential and commercial cooling — installation through emergency repair — delivered by certified technicians."
+        dark
+        class="mt-6"
+      />
+    </div>
+  </section>
+
+  <section class="container-wide py-16 sm:py-20">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((service, i) => <ServiceCard service={service} index={i} />)}
+    </div>
+  </section>
+
+  <CTA title="Not sure which service you need?" description="Use our Service Finder or call our team for guidance." primaryLabel="Find My Service" primaryHref="/#service-finder" />
+</Layout>

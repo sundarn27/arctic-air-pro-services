@@ -1,0 +1,35 @@
+---
+/**
+ * Reusable Call CTA — pulls phone number from the centralized business config
+ * so it never needs to be hardcoded on individual pages.
+ */
+import { business } from "@config/business";
+import Icon from "./Icon.astro";
+import { cn } from "@utils/cn";
+
+interface Props {
+  class?: string;
+  variant?: "solid" | "outline" | "text";
+  label?: string;
+}
+
+const { class: className, variant = "solid", label = `Call ${business.phoneDisplay}` } = Astro.props;
+
+const variants = {
+  solid: "bg-accent-500 text-navy-950 hover:bg-accent-400",
+  outline: "border border-white/25 bg-white/5 text-white hover:bg-white/10",
+  text: "text-navy-900 hover:text-accent-600",
+};
+---
+
+<a
+  href={business.phoneHref}
+  class={cn(
+    "inline-flex items-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition-colors duration-300",
+    variants[variant],
+    className,
+  )}
+>
+  <Icon name="phone" class="h-4 w-4" />
+  {label}
+</a>

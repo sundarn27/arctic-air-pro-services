@@ -1,0 +1,112 @@
+---
+import { business } from "@config/business";
+import Icon from "./Icon.astro";
+import WhatsAppButton from "./WhatsAppButton.astro";
+
+const serviceLinks = [
+  { label: "AC Installation", href: "/services/ac-installation" },
+  { label: "AC Repair", href: "/services/ac-repair" },
+  { label: "AC Servicing", href: "/services/ac-maintenance" },
+  { label: "AC Deep Cleaning", href: "/services/ac-cleaning" },
+  { label: "Commercial HVAC", href: "/services/commercial-hvac" },
+];
+
+const companyLinks = [
+  { label: "About Us", href: "/about" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Service Areas", href: "/service-areas" },
+  { label: "Case Studies", href: "/case-studies" },
+  { label: "Contact", href: "/contact" },
+  { label: "Book Service", href: "/book-service" },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative overflow-hidden bg-navy-950 text-ice-100/80">
+  <div class="technical-grid pointer-events-none absolute inset-0 opacity-40" aria-hidden="true"></div>
+
+  <div class="container-wide relative py-16 sm:py-20">
+    <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      <div>
+        <a href="/" class="flex items-center gap-2.5 text-white" aria-label="ArcticAir Pro Services home">
+          <span class="flex h-9 w-9 items-center justify-center rounded-md bg-white/10 text-accent-400">
+            <Icon name="temp" class="h-5 w-5" />
+          </span>
+          <span class="font-display text-[1.05rem] font-bold tracking-tight">ArcticAir Pro Services</span>
+        </a>
+        <p class="mt-4 max-w-sm text-sm leading-relaxed text-ice-100/60">
+          {business.tagline} Professional AC installation, repair and maintenance for homes and businesses.
+        </p>
+        <div class="mt-6 flex items-center gap-3">
+          {business.socialLinks.map((social) => (
+            <a
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.label}
+              class="flex h-9 w-9 items-center justify-center rounded-md border border-white/10 text-ice-100/70 transition-colors duration-300 hover:border-accent-400/40 hover:text-accent-400"
+            >
+              <Icon name={social.icon} class="h-4 w-4" />
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-white">Services</h3>
+        <ul class="mt-4 space-y-3 text-sm">
+          {serviceLinks.map((link) => (
+            <li><a href={link.href} class="link-underline text-ice-100/65 hover:text-white">{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-white">Company</h3>
+        <ul class="mt-4 space-y-3 text-sm">
+          {companyLinks.map((link) => (
+            <li><a href={link.href} class="link-underline text-ice-100/65 hover:text-white">{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-white">Get in touch</h3>
+        <ul class="mt-4 space-y-3 text-sm text-ice-100/65">
+          <li class="flex items-start gap-2.5">
+            <Icon name="pin" class="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-400" />
+            <span>{business.address.full}</span>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <Icon name="phone" class="h-4 w-4 flex-shrink-0 text-accent-400" />
+            <a href={business.phoneHref} class="hover:text-white">{business.phoneDisplay}</a>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <Icon name="mail" class="h-4 w-4 flex-shrink-0 text-accent-400" />
+            <a href={business.emailHref} class="hover:text-white">{business.email}</a>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <Icon name="clock" class="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-400" />
+            <span>
+              {business.hours.map((h) => (
+                <span class="block">{h.days}: {h.hours}</span>
+              ))}
+            </span>
+          </li>
+        </ul>
+        <div class="mt-5">
+          <WhatsAppButton variant="outline" class="border-white/15 text-white hover:bg-white/10" />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14 flex flex-col gap-3 border-t border-white/10 pt-8 text-xs text-ice-100/45 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {business.name}. All rights reserved.</p>
+      <p class="max-w-2xl leading-relaxed">
+        This is a fictional demo business built as a web-development portfolio piece. Content, pricing, statistics and
+        testimonials are illustrative and do not represent a real company.
+      </p>
+    </div>
+  </div>
+</footer>

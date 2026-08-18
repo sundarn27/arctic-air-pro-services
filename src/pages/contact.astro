@@ -1,0 +1,145 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Breadcrumbs from "@components/astro/Breadcrumbs.astro";
+import SectionHeading from "@components/astro/SectionHeading.astro";
+import Icon from "@components/astro/Icon.astro";
+import CallButton from "@components/astro/CallButton.astro";
+import WhatsAppButton from "@components/astro/WhatsAppButton.astro";
+import { business, siteMeta } from "@config/business";
+import { buildBreadcrumbSchema } from "@utils/seo";
+
+const canonical = new URL("/contact", siteMeta.siteUrl).toString();
+const breadcrumbItems = [{ name: "Home", href: "/" }, { name: "Contact" }];
+const structuredData = [
+  buildBreadcrumbSchema([
+    { name: "Home", url: siteMeta.siteUrl },
+    { name: "Contact", url: canonical },
+  ]),
+];
+
+const contactCards = [
+  { icon: "phone", label: "Call Us", value: business.phoneDisplay, href: business.phoneHref },
+  { icon: "whatsapp", label: "WhatsApp", value: business.whatsapp, href: business.whatsappHref },
+  { icon: "mail", label: "Email", value: business.email, href: business.emailHref },
+  { icon: "pin", label: "Visit Us", value: business.address.full, href: undefined },
+];
+---
+
+<Layout
+  title={`Contact Us | ${siteMeta.siteName}`}
+  description="Get in touch with ArcticAir Pro Services by phone, WhatsApp, email or our contact form. Demo contact details for portfolio purposes."
+  canonical={canonical}
+  structuredData={structuredData}
+>
+  <section class="border-b border-mist-200 bg-navy-950 py-16 sm:py-20">
+    <div class="container-wide">
+      <Breadcrumbs dark items={breadcrumbItems} />
+      <div class="mt-6 max-w-2xl">
+        <SectionHeading
+          eyebrow="Contact"
+          title="We're here to help"
+          description="Reach out for a quote, a question, or to schedule service. Our team typically responds within one business hour."
+          dark
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-16 sm:py-20">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {contactCards.map((card, i) => (
+        <div class="card-surface p-6" data-reveal data-reveal-delay={i}>
+          <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-navy-950 text-ice-300">
+            <Icon name={card.icon} class="h-5 w-5" />
+          </span>
+          <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-mist-500">{card.label}</p>
+          {card.href ? (
+            <a href={card.href} class="mt-1 block text-sm font-semibold text-navy-900 hover:text-ice-600">{card.value}</a>
+          ) : (
+            <p class="mt-1 text-sm font-semibold text-navy-900">{card.value}</p>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-14 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <div class="card-surface p-6 sm:p-8" data-reveal>
+        <h2 class="text-xl font-semibold text-navy-900">Send us a message</h2>
+        <p class="mt-1 text-sm text-mist-600">Demo contact form — messages are not sent to a live inbox in this portfolio build.</p>
+
+        <form id="contact-form" class="mt-6 space-y-5" novalidate>
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label for="c-name" class="text-sm font-medium text-navy-800">Full Name</label>
+              <input id="c-name" name="name" type="text" required class="mt-1.5 w-full rounded-md border border-mist-300 px-4 py-3 text-sm text-navy-900 outline-none focus:border-ice-500" />
+            </div>
+            <div>
+              <label for="c-email" class="text-sm font-medium text-navy-800">Email</label>
+              <input id="c-email" name="email" type="email" required class="mt-1.5 w-full rounded-md border border-mist-300 px-4 py-3 text-sm text-navy-900 outline-none focus:border-ice-500" />
+            </div>
+          </div>
+          <div>
+            <label for="c-subject" class="text-sm font-medium text-navy-800">Subject</label>
+            <input id="c-subject" name="subject" type="text" required class="mt-1.5 w-full rounded-md border border-mist-300 px-4 py-3 text-sm text-navy-900 outline-none focus:border-ice-500" />
+          </div>
+          <div>
+            <label for="c-message" class="text-sm font-medium text-navy-800">Message</label>
+            <textarea id="c-message" name="message" rows="5" required class="mt-1.5 w-full resize-none rounded-md border border-mist-300 px-4 py-3 text-sm text-navy-900 outline-none focus:border-ice-500"></textarea>
+          </div>
+          <button type="submit" class="inline-flex items-center gap-2 rounded-md bg-navy-950 px-6 py-3 text-sm font-semibold text-white hover:bg-navy-900">
+            Send Message <Icon name="arrow-right" class="h-4 w-4" />
+          </button>
+        </form>
+
+        <div id="contact-confirmation" class="hidden rounded-lg border border-ice-200 bg-ice-50 p-5 text-sm text-navy-700" role="status">
+          <p class="font-semibold text-navy-900">Demo message received.</p>
+          <p class="mt-1">This is a portfolio demo — no message was actually sent. In production this would notify our team.</p>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="card-surface p-6">
+          <h3 class="text-sm font-semibold uppercase tracking-wide text-mist-500">Business Hours</h3>
+          <ul class="mt-4 space-y-2 text-sm text-navy-700">
+            {business.hours.map((h) => (
+              <li class="flex items-center justify-between">
+                <span>{h.days}</span>
+                <span class="font-medium">{h.hours}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="relative aspect-[4/3] overflow-hidden rounded-xl border border-mist-200">
+          <img
+            src="/images/contact-map.svg"
+            alt="Illustrative map graphic showing ArcticAir Pro Services location (demo graphic, not a real map)"
+            class="h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <CallButton class="w-full justify-center" />
+          <WhatsAppButton variant="outline" class="w-full justify-center" />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement | null;
+  const confirmation = document.getElementById("contact-confirmation");
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    form.classList.add("hidden");
+    confirmation?.classList.remove("hidden");
+  });
+</script>

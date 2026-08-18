@@ -1,0 +1,65 @@
+---
+import { cn } from "@utils/cn";
+import Icon from "./Icon.astro";
+
+interface Props {
+  href?: string;
+  variant?: "primary" | "secondary" | "ghost" | "outline-light";
+  size?: "sm" | "md" | "lg";
+  class?: string;
+  icon?: string;
+  iconPosition?: "left" | "right";
+  type?: "button" | "submit" | "reset";
+  ariaLabel?: string;
+}
+
+const {
+  href,
+  variant = "primary",
+  size = "md",
+  class: className,
+  icon,
+  iconPosition = "right",
+  type = "button",
+  ariaLabel,
+} = Astro.props;
+
+const base =
+  "group relative inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 whitespace-nowrap";
+
+const sizes = {
+  sm: "px-4 py-2 text-sm",
+  md: "px-6 py-3 text-[0.95rem]",
+  lg: "px-8 py-4 text-base",
+};
+
+const variants = {
+  primary:
+    "bg-accent-500 text-navy-950 shadow-[0_0_0_0_rgba(20,212,244,0)] hover:bg-accent-400 hover:shadow-[0_8px_24px_-6px_rgba(20,212,244,0.55)] active:bg-accent-600",
+  secondary:
+    "bg-navy-900 text-white hover:bg-navy-800",
+  ghost:
+    "bg-transparent text-navy-900 hover:bg-mist-100",
+  "outline-light":
+    "border border-white/25 bg-white/5 text-white backdrop-blur-sm hover:bg-white/10 hover:border-white/40",
+};
+
+const classes = cn(base, sizes[size], variants[variant], className);
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+  href={href}
+  type={href ? undefined : type}
+  class={classes}
+  aria-label={ariaLabel}
+>
+  {icon && iconPosition === "left" && <Icon name={icon} class="h-4 w-4" />}
+  <span><slot /></span>
+  {icon && iconPosition === "right" && (
+    <Icon
+      name={icon}
+      class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
+    />
+  )}
+</Tag>

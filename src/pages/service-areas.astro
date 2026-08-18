@@ -1,0 +1,45 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Breadcrumbs from "@components/astro/Breadcrumbs.astro";
+import SectionHeading from "@components/astro/SectionHeading.astro";
+import CTA from "@components/astro/CTA.astro";
+import ServiceAreaSelector from "@components/react/ServiceAreaSelector";
+import { siteMeta } from "@config/business";
+import { buildBreadcrumbSchema } from "@utils/seo";
+
+const canonical = new URL("/service-areas", siteMeta.siteUrl).toString();
+const breadcrumbItems = [{ name: "Home", href: "/" }, { name: "Service Areas" }];
+const structuredData = [
+  buildBreadcrumbSchema([
+    { name: "Home", url: siteMeta.siteUrl },
+    { name: "Service Areas", url: canonical },
+  ]),
+];
+---
+
+<Layout
+  title={`Service Areas | ${siteMeta.siteName}`}
+  description="ArcticAir Pro Services covers Coastal City, North District, Central Market, Harbor Road, West Avenue, Tech Park and Industrial Estate. Demo coverage zones for portfolio purposes."
+  canonical={canonical}
+  structuredData={structuredData}
+>
+  <section class="border-b border-mist-200 bg-navy-950 py-16 sm:py-20">
+    <div class="container-wide">
+      <Breadcrumbs dark items={breadcrumbItems} />
+      <div class="mt-6 max-w-2xl">
+        <SectionHeading
+          eyebrow="Coverage"
+          title="Where we serve"
+          description="Select a zone below to see estimated response time and coverage type. This is an illustrative demo map, not a real geographic service map."
+          dark
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-16 sm:py-20">
+    <ServiceAreaSelector client:visible />
+  </section>
+
+  <CTA title="Don't see your area listed?" description="Contact us — we're expanding coverage regularly." primaryLabel="Contact Us" primaryHref="/contact" />
+</Layout>

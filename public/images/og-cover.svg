@@ -1,0 +1,30 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#050b16"/>
+      <stop offset="1" stop-color="#0f1f36"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.75" cy="0.2" r="0.9">
+      <stop offset="0" stop-color="#14d4f4" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#14d4f4" stop-opacity="0"/>
+    </radialGradient>
+    
+    <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M 34 0 L 0 0 0 34" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+    </pattern>
+
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+    <g transform="translate(600,290)">
+      <g transform="translate(-80,-80) scale(4)" fill="none" stroke="#7dd6fb" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 44h28 M22 44V21a7 7 0 0 1 7-7v0a7 7 0 0 1 7 7v23 M22 32h14 M18 8h7 M25 8h7"/>
+      </g>
+    </g>
+    <text x="90" y="150" font-family="'Space Grotesk', Arial, sans-serif" font-size="52" font-weight="700" fill="#ffffff">ArcticAir Pro Services</text>
+    <text x="90" y="200" font-family="Arial, sans-serif" font-size="24" fill="#7dd6fb" opacity="0.85">Cooler Spaces. Smarter Comfort.</text>
+    <text x="90" y="560" font-family="Arial, sans-serif" font-size="16" letter-spacing="3" fill="#7dd6fb" opacity="0.5">AC INSTALLATION · REPAIR · MAINTENANCE · COMMERCIAL HVAC</text>
+    
+</svg>

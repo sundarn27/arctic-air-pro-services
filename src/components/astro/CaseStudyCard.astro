@@ -1,0 +1,43 @@
+---
+import type { CaseStudy } from "@data/caseStudies";
+import Icon from "./Icon.astro";
+
+interface Props {
+  caseStudy: CaseStudy;
+}
+
+const { caseStudy } = Astro.props;
+
+const categoryLabel: Record<CaseStudy["category"], string> = {
+  commercial: "Commercial",
+  residential: "Residential",
+  hospitality: "Hospitality",
+};
+---
+
+<a
+  href={`/case-studies#${caseStudy.slug}`}
+  class="card-surface group flex flex-col overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_25px_55px_-25px_rgba(15,31,54,0.4)]"
+  data-reveal
+>
+  <div class="relative aspect-[16/10] overflow-hidden bg-navy-900">
+    <img
+      src={caseStudy.gallery[0]?.src}
+      alt={caseStudy.gallery[0]?.alt ?? caseStudy.title}
+      loading="lazy"
+      decoding="async"
+      class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+    />
+    <span class="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-wide text-navy-800 backdrop-blur">
+      {categoryLabel[caseStudy.category]}
+    </span>
+  </div>
+  <div class="flex flex-1 flex-col p-6">
+    <h3 class="text-lg font-semibold text-navy-900">{caseStudy.title}</h3>
+    <p class="mt-2 line-clamp-2 flex-1 text-sm leading-relaxed text-mist-600">{caseStudy.problem}</p>
+    <div class="mt-5 flex items-center gap-1.5 text-sm font-semibold text-ice-600">
+      Read case study
+      <Icon name="arrow-right" class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+    </div>
+  </div>
+</a>

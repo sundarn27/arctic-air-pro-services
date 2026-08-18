@@ -1,0 +1,111 @@
+---
+import { business } from "@config/business";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+---
+
+<section class="relative overflow-hidden bg-navy-950 pb-20 pt-14 sm:pb-28 sm:pt-20 lg:pt-24" data-parallax-container>
+  <!-- Layered background: technical grid + radial glow + gradient wash -->
+  <div class="technical-grid pointer-events-none absolute inset-0" aria-hidden="true"></div>
+  <div
+    class="pointer-events-none absolute -left-32 -top-32 h-[520px] w-[520px] rounded-full bg-ice-500/10 blur-[110px]"
+    data-parallax="18"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute -right-24 top-24 h-[460px] w-[460px] rounded-full bg-accent-500/10 blur-[120px]"
+    data-parallax="26"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-navy-950/20 to-navy-950" aria-hidden="true"></div>
+
+  <div class="container-wide relative grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10">
+    <div>
+      <span class="eyebrow-dark" data-reveal>
+        <span class="h-1.5 w-1.5 rounded-full bg-accent-500"></span>
+        Residential &amp; Commercial HVAC
+      </span>
+
+      <p class="mt-6 font-mono text-xs font-medium uppercase tracking-[0.28em] text-ice-300/70" data-reveal data-reveal-delay="1">
+        ArcticAir Pro Services
+      </p>
+
+      <h1 class="mt-3 max-w-xl font-display text-4xl font-bold leading-[1.05] text-white sm:text-5xl lg:text-[3.4rem]">
+        <span class="block overflow-hidden">
+          <span class="block" data-reveal data-reveal-delay="2">Cooler Spaces.</span>
+        </span>
+        <span class="block overflow-hidden">
+          <span class="block text-ice-300" data-reveal data-reveal-delay="3">Smarter Comfort.</span>
+        </span>
+      </h1>
+
+      <p class="mt-6 max-w-lg text-base leading-relaxed text-ice-100/70 sm:text-lg" data-reveal data-reveal-delay="4">
+        Professional AC installation, repair and maintenance for homes and businesses — certified technicians,
+        transparent pricing, and same-day service when you need it most.
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center gap-4" data-reveal data-reveal-delay="5">
+        <Button href="/book-service" size="lg" icon="arrow-right">Book AC Service</Button>
+        <Button href={business.phoneHref} variant="outline-light" size="lg" icon="phone" iconPosition="left">
+          Call Now
+        </Button>
+      </div>
+
+      <ul class="mt-10 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-white/10 pt-8 sm:grid-cols-4" data-reveal data-reveal-delay="6">
+        {business.trustBadges.map((badge) => (
+          <li class="flex items-start gap-2 text-xs font-medium text-ice-100/70 sm:text-sm">
+            <Icon name="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-400" />
+            <span>{badge}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="relative" data-reveal data-reveal-delay="3">
+      <div class="relative mx-auto aspect-[4/5] max-w-md overflow-hidden rounded-2xl border border-white/10 shadow-[0_40px_90px_-30px_rgba(0,0,0,0.6)]">
+        <img
+          src="/images/hero-technician.svg"
+          alt="Certified ArcticAir Pro technician servicing a modern split AC unit (illustrative demo graphic)"
+          class="h-full w-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-transparent"></div>
+      </div>
+
+      <!-- Floating service cards -->
+      <div
+        class="absolute -left-6 top-8 hidden w-48 rounded-xl border border-white/10 bg-navy-900/90 p-4 shadow-2xl backdrop-blur sm:block animate-float"
+        data-parallax="10"
+      >
+        <div class="flex items-center gap-2.5">
+          <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-accent-500/15 text-accent-400">
+            <Icon name="shield" class="h-4.5 w-4.5" />
+          </span>
+          <div>
+            <p class="text-sm font-semibold text-white">Certified Techs</p>
+            <p class="text-[0.7rem] text-ice-100/60">Trained &amp; verified</p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="absolute -bottom-6 -right-4 w-52 rounded-xl border border-white/10 bg-white p-4 shadow-2xl sm:-right-8"
+        data-parallax="14"
+      >
+        <div class="flex items-center gap-2.5">
+          <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-ice-50 text-ice-600">
+            <Icon name="bolt" class="h-4.5 w-4.5" />
+          </span>
+          <div>
+            <p class="text-sm font-semibold text-navy-900">Same-Day Service</p>
+            <p class="text-[0.7rem] text-mist-500">Book before 2 PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

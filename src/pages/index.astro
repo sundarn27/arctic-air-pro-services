@@ -1,0 +1,271 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Hero from "@components/astro/Hero.astro";
+import SectionHeading from "@components/astro/SectionHeading.astro";
+import ServiceCard from "@components/astro/ServiceCard.astro";
+import ProcessTimeline from "@components/astro/ProcessTimeline.astro";
+import TestimonialCard from "@components/astro/TestimonialCard.astro";
+import Stats from "@components/astro/Stats.astro";
+import CTA from "@components/astro/CTA.astro";
+import Icon from "@components/astro/Icon.astro";
+import Button from "@components/astro/Button.astro";
+import CallButton from "@components/astro/CallButton.astro";
+import FAQ from "@components/astro/FAQ.astro";
+import ServiceFinder from "@components/react/ServiceFinder";
+import ServiceEstimator from "@components/react/ServiceEstimator";
+import BeforeAfterSlider from "@components/react/BeforeAfterSlider";
+import { getFeaturedServices } from "@data/services";
+import { testimonials } from "@data/testimonials";
+import { generalFaqs } from "@data/faqs";
+import { business, siteMeta } from "@config/business";
+import { buildLocalBusinessSchema, buildFaqSchema } from "@utils/seo";
+
+const featuredServices = getFeaturedServices();
+
+const symptoms = [
+  { icon: "temp", label: "AC not cooling" },
+  { icon: "drop", label: "Water leaking" },
+  { icon: "bolt", label: "Strange noise" },
+  { icon: "wind", label: "Bad smell" },
+  { icon: "gas", label: "High electricity bill" },
+  { icon: "wrench", label: "AC not starting" },
+  { icon: "duct", label: "Weak airflow" },
+];
+
+const whyChooseUs = [
+  { icon: "shield", title: "Certified Technicians", description: "Every technician is trained, background-verified and certified on major AC brands." },
+  { icon: "clock", title: "Same-Day Service", description: "Book before 2 PM for same-day appointments across most service areas." },
+  { icon: "badge", title: "Transparent Pricing", description: "Upfront, itemized quotes before any work begins — no surprise charges." },
+  { icon: "bolt", title: "24/7 Emergency Line", description: "Priority dispatch for urgent cooling failures, day or night." },
+];
+
+const structuredData = [buildLocalBusinessSchema(), buildFaqSchema(generalFaqs)];
+---
+
+<Layout
+  title={siteMeta.defaultTitle}
+  description={siteMeta.defaultDescription}
+  structuredData={structuredData}
+>
+  <Hero />
+
+  <!-- Trust indicators -->
+  <section class="border-b border-mist-200 bg-white py-10">
+    <div class="container-wide">
+      <div class="grid grid-cols-2 gap-6 sm:grid-cols-4">
+        {business.trustBadges.map((badge, i) => (
+          <div class="flex items-center gap-3" data-reveal data-reveal-delay={i}>
+            <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-ice-50 text-ice-600">
+              <Icon name={["shield", "badge", "clock", "bolt"][i % 4]} class="h-5 w-5" />
+            </span>
+            <span class="text-sm font-semibold text-navy-800">{badge}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Animated statistics -->
+  <section class="bg-navy-950 py-16 sm:py-20">
+    <div class="container-wide">
+      <Stats />
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="container-wide py-20 sm:py-24">
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <SectionHeading
+        eyebrow="What we do"
+        title="Complete AC &amp; HVAC services"
+        description="From first install to emergency repair, one team handles every stage of your cooling system's life."
+      />
+      <Button href="/services" variant="ghost" icon="arrow-right" class="hidden sm:inline-flex">View all services</Button>
+    </div>
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {featuredServices.map((service, i) => <ServiceCard service={service} index={i} />)}
+    </div>
+    <Button href="/services" variant="ghost" icon="arrow-right" class="mt-8 flex w-fit sm:hidden">View all services</Button>
+  </section>
+
+  <!-- Interactive Service Finder -->
+  <section id="service-finder" class="scroll-mt-24 bg-mist-50 py-20 sm:py-24">
+    <div class="container-wide grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <SectionHeading
+        eyebrow="Not sure what you need?"
+        title="Find the right service in seconds"
+        description="Tell us what's wrong and we'll match you with the service most likely to fix it."
+      />
+      <ServiceFinder client:visible />
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="container-wide py-20 sm:py-24">
+    <SectionHeading
+      eyebrow="Why ArcticAir Pro"
+      title="Built for reliability, not just repairs"
+      align="center"
+      class="mx-auto"
+    />
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {whyChooseUs.map((item, i) => (
+        <div class="card-surface p-6 text-center sm:text-left" data-reveal data-reveal-delay={i}>
+          <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-navy-950 text-ice-300 sm:mx-0">
+            <Icon name={item.icon} class="h-6 w-6" />
+          </span>
+          <h3 class="mt-4 text-base font-semibold text-navy-900">{item.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-mist-600">{item.description}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- AC Problem / Symptom section -->
+  <section class="bg-navy-950 py-20 sm:py-24">
+    <div class="container-wide">
+      <SectionHeading
+        eyebrow="Common symptoms"
+        title="Recognize the warning signs"
+        description="Catching these early can prevent a small issue from becoming a costly breakdown."
+        dark
+      />
+      <div class="mt-10 flex flex-wrap gap-3">
+        {symptoms.map((symptom, i) => (
+          <div
+            class="flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-ice-100/85"
+            data-reveal
+            data-reveal-delay={i}
+          >
+            <Icon name={symptom.icon} class="h-4 w-4 text-accent-400" />
+            {symptom.label}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Service Estimator -->
+  <section class="container-wide py-20 sm:py-24">
+    <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <SectionHeading
+        eyebrow="Instant demo pricing"
+        title="Estimate your service cost"
+        description="Answer a few quick questions to see a demo price range before you book."
+      />
+      <ServiceEstimator client:visible />
+    </div>
+  </section>
+
+  <!-- Emergency Service CTA -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-ice-600 to-navy-800 py-16 sm:py-20">
+    <div class="technical-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden="true"></div>
+    <div class="container-wide relative flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
+      <div data-reveal>
+        <span class="eyebrow-dark"><span class="h-1.5 w-1.5 rounded-full bg-white"></span>24/7 Emergency Service</span>
+        <h2 class="mt-4 max-w-lg text-2xl font-bold text-white sm:text-3xl">AC failure can't wait for tomorrow</h2>
+        <p class="mt-3 max-w-md text-sm text-white/80 sm:text-base">
+          Our emergency line connects you to the next available certified technician for priority dispatch.
+        </p>
+      </div>
+      <div class="flex flex-shrink-0 flex-col gap-3 sm:flex-row" data-reveal data-reveal-delay="1">
+        <CallButton variant="solid" label={`Emergency: ${business.phoneDisplay}`} class="bg-white text-navy-900 hover:bg-ice-50" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Before / After -->
+  <section class="bg-mist-50 py-20 sm:py-24">
+    <div class="container-wide">
+      <SectionHeading
+        eyebrow="Real difference"
+        title="See the ArcticAir Pro difference"
+        description="Drag the slider to compare a unit before and after our deep cleaning service."
+        align="center"
+        class="mx-auto"
+      />
+      <div class="mx-auto mt-10 max-w-3xl">
+        <BeforeAfterSlider
+          client:visible
+          beforeSrc="/images/before-cleaning.svg"
+          afterSrc="/images/after-cleaning.svg"
+          beforeAlt="AC coil before deep cleaning, showing dust build-up (illustrative demo graphic)"
+          afterAlt="AC coil after deep cleaning, fully restored (illustrative demo graphic)"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Process timeline -->
+  <section class="container-wide py-20 sm:py-24">
+    <SectionHeading
+      eyebrow="How it works"
+      title="Booking to completion in 6 simple steps"
+      align="center"
+      class="mx-auto"
+    />
+    <div class="mt-12">
+      <ProcessTimeline />
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="bg-mist-50 py-20 sm:py-24">
+    <div class="container-wide">
+      <SectionHeading
+        eyebrow="Customer stories"
+        title="Trusted by homes and businesses"
+        align="center"
+        class="mx-auto"
+      />
+      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {testimonials.map((t) => <TestimonialCard testimonial={t} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Areas preview -->
+  <section class="container-wide py-20 sm:py-24">
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+      <SectionHeading
+        eyebrow="Coverage"
+        title="Serving Coastal City and beyond"
+        description="Fast dispatch across seven demo coverage zones — from residential neighborhoods to commercial estates."
+      />
+      <Button href="/service-areas" variant="secondary" icon="arrow-right" class="w-fit">Explore service areas</Button>
+    </div>
+    <div class="mt-10 flex flex-wrap gap-3">
+      {business.serviceAreas.map((area, i) => (
+        <span
+          class="inline-flex items-center gap-1.5 rounded-full border border-mist-200 bg-white px-4 py-2 text-sm font-medium text-navy-700"
+          data-reveal
+          data-reveal-delay={i}
+        >
+          <Icon name="pin" class="h-3.5 w-3.5 text-ice-600" />
+          {area}
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-mist-50 py-20 sm:py-24">
+    <div class="container-wide">
+      <SectionHeading
+        eyebrow="Questions"
+        title="Frequently asked questions"
+        align="center"
+        class="mx-auto"
+      />
+      <div class="mx-auto mt-10 max-w-3xl">
+        <FAQ items={generalFaqs} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <CTA
+    title="Ready for cooler spaces and smarter comfort?"
+    description="Book online in under two minutes, or call our team for same-day service."
+  />
+</Layout>

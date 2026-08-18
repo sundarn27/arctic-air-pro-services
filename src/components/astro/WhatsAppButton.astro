@@ -1,0 +1,46 @@
+---
+import { business } from "@config/business";
+import Icon from "./Icon.astro";
+import { cn } from "@utils/cn";
+
+interface Props {
+  class?: string;
+  variant?: "solid" | "outline" | "text" | "floating";
+  label?: string;
+  message?: string;
+}
+
+const {
+  class: className,
+  variant = "solid",
+  label = "Chat on WhatsApp",
+  message = "Hi ArcticAir Pro Services, I'd like to enquire about AC service.",
+} = Astro.props;
+
+const href = `${business.whatsappHref}?text=${encodeURIComponent(message)}`;
+
+const variants = {
+  solid: "bg-[#1ea952] text-white hover:bg-[#188c44]",
+  outline: "border border-mist-300 text-navy-900 hover:bg-mist-100",
+  text: "text-navy-900 hover:text-[#1ea952]",
+  floating:
+    "fixed bottom-6 right-5 z-40 h-14 w-14 rounded-full bg-[#1ea952] text-white shadow-[0_10px_30px_-8px_rgba(15,31,54,0.45)] hover:bg-[#188c44] sm:bottom-8 sm:right-8",
+};
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class={cn(
+    variant === "floating"
+      ? "flex items-center justify-center"
+      : "inline-flex items-center gap-2 rounded-md px-5 py-3 text-sm font-semibold transition-colors duration-300",
+    variants[variant],
+    className,
+  )}
+  aria-label={variant === "floating" ? "Chat with us on WhatsApp" : undefined}
+>
+  <Icon name="whatsapp" class={variant === "floating" ? "h-6 w-6" : "h-4 w-4"} />
+  {variant !== "floating" && label}
+</a>

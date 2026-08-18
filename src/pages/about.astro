@@ -1,0 +1,122 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Breadcrumbs from "@components/astro/Breadcrumbs.astro";
+import SectionHeading from "@components/astro/SectionHeading.astro";
+import Stats from "@components/astro/Stats.astro";
+import Icon from "@components/astro/Icon.astro";
+import CTA from "@components/astro/CTA.astro";
+import { business, siteMeta } from "@config/business";
+import { buildBreadcrumbSchema } from "@utils/seo";
+
+const canonical = new URL("/about", siteMeta.siteUrl).toString();
+const breadcrumbItems = [{ name: "Home", href: "/" }, { name: "About" }];
+const structuredData = [
+  buildBreadcrumbSchema([
+    { name: "Home", url: siteMeta.siteUrl },
+    { name: "About", url: canonical },
+  ]),
+];
+
+const values = [
+  { icon: "shield", title: "Certified, Not Just Capable", description: "Every technician completes brand certification and background verification before joining the field team." },
+  { icon: "badge", title: "Transparent By Default", description: "We quote before we work, and we explain every line item in plain language." },
+  { icon: "clock", title: "Respect Your Time", description: "Defined arrival windows, live updates, and same-day availability where possible." },
+  { icon: "temp", title: "Engineering-Led", description: "Diagnostics come first — we fix root causes, not just symptoms." },
+];
+
+const timeline = [
+  { year: String(business.foundedYear), title: "ArcticAir Pro founded", description: "Started as a small residential repair team in Coastal City (fictional demo history)." },
+  { year: "2019", title: "Commercial division launched", description: "Expanded into commercial HVAC maintenance contracts for offices and hospitality clients." },
+  { year: "2022", title: "24/7 emergency line introduced", description: "Added round-the-clock dispatch for urgent cooling failures." },
+  { year: "Today", title: "5000+ services completed", description: "Serving seven demo coverage zones with a growing certified technician team." },
+];
+---
+
+<Layout
+  title={`About ArcticAir Pro Services | ${siteMeta.siteName}`}
+  description="Learn about ArcticAir Pro Services — a fictional demo HVAC company built to showcase premium AC installation, repair and maintenance service delivery."
+  canonical={canonical}
+  structuredData={structuredData}
+>
+  <section class="border-b border-mist-200 bg-navy-950 py-16 sm:py-20">
+    <div class="container-wide">
+      <Breadcrumbs dark items={breadcrumbItems} />
+      <div class="mt-6 max-w-2xl">
+        <SectionHeading
+          eyebrow="About ArcticAir Pro"
+          title="Comfort engineered, not improvised"
+          description="We built ArcticAir Pro Services around one idea: HVAC work should be precise, transparent and dependable — treated as engineering, not guesswork."
+          dark
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-16 sm:py-20">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div data-reveal>
+        <span class="eyebrow"><span class="h-1.5 w-1.5 rounded-full bg-accent-500"></span>Our Story</span>
+        <h2 class="mt-4 text-2xl font-semibold text-navy-900 sm:text-3xl">Built by people who take cooling seriously</h2>
+        <p class="mt-4 text-base leading-relaxed text-mist-600">
+          ArcticAir Pro Services is a fictional demo HVAC company created to showcase what a premium,
+          technology-enabled service brand can look like online. In this story, the company started with a small
+          team of certified technicians frustrated by inconsistent, opaque service in the industry — and set out
+          to do it differently: transparent pricing, certified people, and a genuine diagnose-first approach.
+        </p>
+        <p class="mt-4 text-base leading-relaxed text-mist-600">
+          Today the (fictional) team serves both residential homes and commercial sites across seven demo coverage
+          zones, backed by a 24/7 emergency line and structured maintenance contracts for businesses that can't
+          afford downtime.
+        </p>
+      </div>
+      <div class="relative aspect-[4/3] overflow-hidden rounded-2xl border border-mist-200 shadow-xl" data-reveal data-reveal-delay="1">
+        <img
+          src="/images/about-team.svg"
+          alt="ArcticAir Pro technician team with HVAC equipment (illustrative demo graphic)"
+          class="h-full w-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-navy-950 py-16 sm:py-20">
+    <div class="container-wide">
+      <Stats />
+    </div>
+  </section>
+
+  <section class="container-wide py-16 sm:py-20">
+    <SectionHeading eyebrow="What we stand for" title="Our operating principles" align="center" class="mx-auto" />
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {values.map((v, i) => (
+        <div class="card-surface p-6" data-reveal data-reveal-delay={i}>
+          <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-navy-950 text-ice-300">
+            <Icon name={v.icon} class="h-6 w-6" />
+          </span>
+          <h3 class="mt-4 text-base font-semibold text-navy-900">{v.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-mist-600">{v.description}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="bg-mist-50 py-16 sm:py-20">
+    <div class="container-wide">
+      <SectionHeading eyebrow="Milestones" title="Our journey so far" align="center" class="mx-auto" />
+      <ol class="mx-auto mt-12 max-w-2xl space-y-8 border-l border-mist-300 pl-8">
+        {timeline.map((item, i) => (
+          <li class="relative" data-reveal data-reveal-delay={i}>
+            <span class="absolute -left-[38px] flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-ice-500 ring-4 ring-mist-50"></span>
+            <span class="text-xs font-semibold uppercase tracking-wide text-ice-600">{item.year}</span>
+            <h3 class="mt-1 text-base font-semibold text-navy-900">{item.title}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-mist-600">{item.description}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <CTA title="Want ArcticAir Pro on your next job?" description="Book a certified technician for installation, repair or maintenance." />
+</Layout>

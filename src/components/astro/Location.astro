@@ -1,0 +1,27 @@
+---
+/**
+ * Small reusable "Location" chip — used in Service Areas / footer contexts.
+ */
+import Icon from "./Icon.astro";
+
+interface Props {
+  name: string;
+  active?: boolean;
+  class?: string;
+}
+
+const { name, active = false, class: className = "" } = Astro.props;
+---
+
+<span
+  class:list={[
+    "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors duration-300",
+    active
+      ? "border-accent-500/50 bg-accent-500/10 text-navy-900"
+      : "border-mist-200 bg-white text-mist-600",
+    className,
+  ]}
+>
+  <Icon name="pin" class="h-3.5 w-3.5" />
+  {name}
+</span>

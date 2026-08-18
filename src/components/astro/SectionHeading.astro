@@ -1,0 +1,38 @@
+---
+import { cn } from "@utils/cn";
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  align?: "left" | "center";
+  dark?: boolean;
+  class?: string;
+}
+
+const { eyebrow, title, description, align = "left", dark = false, class: className } = Astro.props;
+---
+
+<div
+  class={cn(
+    "max-w-2xl",
+    align === "center" && "mx-auto text-center",
+    className,
+  )}
+  data-reveal
+>
+  {eyebrow && (
+    <span class={dark ? "eyebrow-dark" : "eyebrow"}>
+      <span class="h-1.5 w-1.5 rounded-full bg-accent-500"></span>
+      {eyebrow}
+    </span>
+  )}
+  <h2 class={cn("mt-4 text-3xl font-semibold leading-[1.1] sm:text-4xl lg:text-[2.75rem]", dark ? "text-white" : "text-navy-900")}>
+    {title}
+  </h2>
+  {description && (
+    <p class={cn("mt-4 text-base leading-relaxed sm:text-lg", dark ? "text-ice-100/80" : "text-mist-600")}>
+      {description}
+    </p>
+  )}
+</div>

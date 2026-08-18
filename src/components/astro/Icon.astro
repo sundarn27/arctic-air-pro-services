@@ -1,0 +1,83 @@
+---
+/**
+ * Minimal inline-SVG icon system — no external icon dependency.
+ * Line-style icons matching the technical/engineering visual identity.
+ */
+interface Props {
+  name: string;
+  class?: string;
+  strokeWidth?: number;
+  id?: string;
+}
+
+const { name, class: className = "h-5 w-5", strokeWidth = 1.75, id } = Astro.props;
+
+const paths: Record<string, string> = {
+  install:
+    "M4 21h16 M8 21V9a4 4 0 0 1 4-4v0a4 4 0 0 1 4 4v12 M8 13h8 M6 3h4 M14 3h4",
+  repair:
+    "M14.7 6.3a4 4 0 0 1-5.4 5.4L5 16l2 2 4.3-4.3a4 4 0 0 1 5.4-5.4l-2.6 2.6-2-2 2.6-2.6z",
+  maintenance:
+    "M12 5v2 M12 17v2 M5 12h2 M17 12h2 M7.05 7.05l1.4 1.4 M15.55 15.55l1.4 1.4 M7.05 16.95l1.4-1.4 M15.55 8.45l1.4-1.4 M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
+  cleaning:
+    "M3 12h18 M5 12l1.5 7a2 2 0 0 0 2 1.5h7a2 2 0 0 0 2-1.5L19 12 M8 12V6a4 4 0 0 1 8 0v6 M12 3v1",
+  gas:
+    "M12 3s5 5.5 5 9.5a5 5 0 0 1-10 0C7 8.5 12 3 12 3z M12 12.5a2.5 2.5 0 0 1 0 5",
+  duct:
+    "M3 8h18v3H3z M3 15h18v3H3z M7 11v4 M17 11v4",
+  commercial:
+    "M4 21V9l8-5 8 5v12 M9 21v-6h6v6 M4 9h16 M9 6.5h.01 M15 6.5h.01",
+  emergency:
+    "M12 2 3 7v6c0 5 4 8.5 9 9 5-.5 9-4 9-9V7l-9-5z M12 8v5 M12 16h.01",
+  phone:
+    "M6.5 3h3l2 5-2.5 2a12 12 0 0 0 6 6l2-2.5 5 2v3a2 2 0 0 1-2.2 2A18 18 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3z",
+  whatsapp:
+    "M20 12a8 8 0 1 1-14.7-4.4L4 21l5.6-1.3A8 8 0 0 1 20 12z M8.5 9.5c0 3.5 2.5 6 6 6 .8 0 1-.7 1-1.2v-1l-2-.6-1 1a5 5 0 0 1-3-3l1-1-.6-2h-1c-.5 0-1.2.2-1.2 1z",
+  check: "M5 12.5 9.5 17 19 7",
+  star: "M12 3.5l2.6 5.3 5.9.8-4.3 4.1 1 5.8L12 16.8 6.8 19.5l1-5.8L3.5 9.6l5.9-.8L12 3.5z",
+  "arrow-right": "M4 12h16 M13 5l7 7-7 7",
+  "arrow-down": "M12 4v16 M5 13l7 7 7-7",
+  chevron: "M6 9l6 6 6-6",
+  pin: "M12 21s7-6.3 7-11.5A7 7 0 0 0 5 9.5C5 14.7 12 21 12 21z M12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z",
+  clock: "M12 7v5l3.5 2 M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z",
+  shield: "M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z",
+  badge: "M12 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10z M8.5 14 7 21l5-2.5L17 21l-1.5-7",
+  bolt: "M13 3 5 13h5l-1 8 9-11h-6l1-7z",
+  temp:
+    "M12 3a2 2 0 0 0-2 2v9.5a4 4 0 1 0 4 0V5a2 2 0 0 0-2-2z M12 15v-6",
+  drop: "M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z",
+  wrench:
+    "M14.7 6.3a4 4 0 0 1-5.4 5.4L5 16l2 2 4.3-4.3a4 4 0 0 1 5.4-5.4l-2.6 2.6-2-2 2.6-2.6z",
+  wind: "M3 8h11a2.5 2.5 0 1 0-2.5-2.5 M3 12h15a2.5 2.5 0 1 1-2.5 2.5 M3 16h9a2 2 0 1 1-2 2",
+  building:
+    "M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16 M14 21V9h5a1 1 0 0 1 1 1v11 M8 8h.01 M8 12h.01 M8 16h.01",
+  mail: "M4 6h16v12H4z M4 7l8 6 8-6",
+  facebook: "M15 8h-2a2 2 0 0 0-2 2v2H9v3h2v7h3v-7h2.5l.5-3H14v-1.5A.5.5 0 0 1 14.5 9H16z",
+  instagram:
+    "M4 8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z M16.5 7.5h.01",
+  linkedin:
+    "M4 4h16v16H4z M8 10v7 M8 7.5h.01 M12 17v-4a2 2 0 0 1 4 0v4 M12 13v4",
+  youtube:
+    "M22 12s0-3.4-.4-5A2.5 2.5 0 0 0 19.8 5.3C17.9 5 12 5 12 5s-5.9 0-7.8.3A2.5 2.5 0 0 0 2.4 7C2 8.6 2 12 2 12s0 3.4.4 5a2.5 2.5 0 0 0 1.8 1.7c1.9.3 7.8.3 7.8.3s5.9 0 7.8-.3A2.5 2.5 0 0 0 21.6 17c.4-1.6.4-5 .4-5z M10 9.5l5 2.5-5 2.5z",
+  menu: "M4 7h16 M4 12h16 M4 17h16",
+  close: "M6 6l12 12 M18 6 6 18",
+  search: "M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z M21 21l-4.3-4.3",
+  filter: "M4 6h16 M7 12h10 M10 18h4",
+};
+
+const d = paths[name] ?? paths.check;
+---
+
+<svg
+  id={id}
+  class={className}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={strokeWidth}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  {d.split(" M").map((seg, i) => <path d={i === 0 ? seg : `M${seg}`} />)}
+</svg>

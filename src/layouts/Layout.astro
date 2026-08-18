@@ -1,0 +1,109 @@
+---
+import { ClientRouter } from "astro:transitions";
+import { siteMeta } from "@config/business";
+import Header from "@components/astro/Header.astro";
+import Footer from "@components/astro/Footer.astro";
+import AnnouncementBar from "@components/astro/AnnouncementBar.astro";
+import WhatsAppButton from "@components/astro/WhatsAppButton.astro";
+import ScrollProgress from "@components/react/ScrollProgress";
+import "@/styles/global.css";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  image?: string;
+  noindex?: boolean;
+  structuredData?: Record<string, unknown>[];
+}
+
+const {
+  title = siteMeta.defaultTitle,
+  description = siteMeta.defaultDescription,
+  canonical = new URL(Astro.url.pathname, siteMeta.siteUrl).toString(),
+  image = "/images/og-cover.svg",
+  noindex = false,
+  structuredData = [],
+} = Astro.props;
+
+const ogImage = new URL(image, siteMeta.siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteMeta.siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={siteMeta.locale} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={siteMeta.twitterHandle} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="theme-color" content={siteMeta.themeColor} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+
+    {structuredData.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />
+    ))}
+
+    <ClientRouter />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-accent-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-navy-950"
+    >
+      Skip to main content
+    </a>
+
+    <ScrollProgress client:load />
+    <AnnouncementBar />
+    <Header />
+
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+    <WhatsAppButton variant="floating" />
+
+    <script>
+      // Client-only: scroll-triggered reveal/parallax bindings (Motion vanilla API).
+      import "@/scripts/motion-client";
+    </script>
+
+    <script>
+      // Re-run reveal/parallax bindings on every Astro view-transition swap.
+      document.addEventListener("astro:after-swap", () => {
+        document.querySelectorAll("[data-reveal-bound]").forEach((el) => el.removeAttribute("data-reveal-bound"));
+        document.querySelectorAll("[data-parallax-bound]").forEach((el) => el.removeAttribute("data-parallax-bound"));
+      });
+    </script>
+  </body>
+</html>

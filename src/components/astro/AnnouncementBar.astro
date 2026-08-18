@@ -1,0 +1,19 @@
+---
+import { business } from "@config/business";
+import Icon from "./Icon.astro";
+---
+
+<div class="relative z-50 bg-navy-950 text-ice-100">
+  <div class="container-wide flex items-center justify-center gap-2 py-2 text-center text-xs font-medium sm:text-[0.8rem]">
+    <Icon name="bolt" class="h-3.5 w-3.5 flex-shrink-0 text-accent-400" />
+    <p>
+      <span class="font-semibold text-white">24/7 Emergency AC Service</span>
+      <span class="mx-1.5 text-ice-100/50">·</span>
+      Same-day appointments available
+      <span class="mx-1.5 hidden text-ice-100/50 sm:inline">·</span>
+      <a href={business.phoneHref} class="hidden underline decoration-accent-400/60 underline-offset-2 hover:text-white sm:inline">
+        Call {business.phoneDisplay}
+      </a>
+    </p>
+  </div>
+</div>

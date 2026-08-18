@@ -1,0 +1,12 @@
+---
+import type { FAQItem } from "@data/faqs";
+import FAQAccordion from "../react/FAQAccordion";
+
+interface Props {
+  items: FAQItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<FAQAccordion client:visible items={items} />

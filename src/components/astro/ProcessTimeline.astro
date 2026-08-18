@@ -1,0 +1,22 @@
+---
+import { processSteps } from "@data/processSteps";
+---
+
+<ol class="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+  {processSteps.map((step, i) => (
+    <li
+      class="card-surface relative overflow-hidden p-6 sm:p-7"
+      data-reveal
+      data-reveal-delay={i}
+    >
+      <span class="font-mono text-4xl font-bold text-mist-200 transition-colors duration-500" aria-hidden="true">
+        {step.number}
+      </span>
+      <h3 class="mt-3 text-base font-semibold text-navy-900">{step.title}</h3>
+      <p class="mt-2 text-sm leading-relaxed text-mist-600">{step.description}</p>
+      {i < processSteps.length - 1 && (
+        <span class="absolute right-4 top-6 hidden text-mist-300 lg:block" aria-hidden="true">→</span>
+      )}
+    </li>
+  ))}
+</ol>

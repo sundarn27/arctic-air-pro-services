@@ -1,0 +1,71 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Breadcrumbs from "@components/astro/Breadcrumbs.astro";
+import SectionHeading from "@components/astro/SectionHeading.astro";
+import PricingCard from "@components/astro/PricingCard.astro";
+import FAQ from "@components/astro/FAQ.astro";
+import CTA from "@components/astro/CTA.astro";
+import Icon from "@components/astro/Icon.astro";
+import { pricingPlans, pricingNotes } from "@data/pricing";
+import { generalFaqs } from "@data/faqs";
+import { siteMeta } from "@config/business";
+import { buildBreadcrumbSchema } from "@utils/seo";
+
+const canonical = new URL("/pricing", siteMeta.siteUrl).toString();
+const breadcrumbItems = [{ name: "Home", href: "/" }, { name: "Pricing" }];
+const structuredData = [
+  buildBreadcrumbSchema([
+    { name: "Home", url: siteMeta.siteUrl },
+    { name: "Pricing", url: canonical },
+  ]),
+];
+
+const pricingFaqs = generalFaqs.filter((f) => f.question.includes("cost") || f.question.includes("emergency"));
+---
+
+<Layout
+  title={`Pricing | ${siteMeta.siteName}`}
+  description="Transparent, starting-from pricing for AC installation, repair, maintenance, deep cleaning and gas refill. Demo pricing — final cost depends on inspection."
+  canonical={canonical}
+  structuredData={structuredData}
+>
+  <section class="border-b border-mist-200 bg-navy-950 py-16 sm:py-20">
+    <div class="container-wide">
+      <Breadcrumbs dark items={breadcrumbItems} />
+      <div class="mt-6 max-w-2xl">
+        <SectionHeading
+          eyebrow="Pricing"
+          title="Clear, starting-from pricing"
+          description="No hidden fees, no vague estimates read out over the phone. Every job is quoted upfront before work begins."
+          dark
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-16 sm:py-20">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {pricingPlans.map((plan) => <PricingCard plan={plan} />)}
+    </div>
+
+    <div class="mt-12 rounded-xl border border-ice-200 bg-ice-50 p-6 sm:p-7" data-reveal>
+      <div class="flex items-start gap-3">
+        <Icon name="badge" class="mt-0.5 h-5 w-5 flex-shrink-0 text-ice-600" />
+        <div class="space-y-2 text-sm leading-relaxed text-navy-700">
+          {pricingNotes.map((note) => <p>{note}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-mist-50 py-16 sm:py-20">
+    <div class="container-wide">
+      <SectionHeading eyebrow="Pricing FAQs" title="Common pricing questions" align="center" class="mx-auto" />
+      <div class="mx-auto mt-10 max-w-3xl">
+        <FAQ items={pricingFaqs.length ? pricingFaqs : generalFaqs} />
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Get an exact quote for your AC" description="Book a technician visit for an accurate, on-site quote." />
+</Layout>

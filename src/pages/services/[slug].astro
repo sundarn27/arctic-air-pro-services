@@ -1,0 +1,22 @@
+---
+/**
+ * Reusable dynamic service-page architecture: one template generates every
+ * static service detail page from src/data/services.ts via getStaticPaths.
+ * This covers the required routes (/services/ac-installation, ac-repair,
+ * ac-maintenance, ac-cleaning, commercial-hvac) plus the extended catalogue
+ * (gas refill, duct cleaning, emergency service) without duplicating markup.
+ */
+import ServiceLayout from "@layouts/ServiceLayout.astro";
+import { services } from "@data/services";
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+---
+
+<ServiceLayout service={service} />

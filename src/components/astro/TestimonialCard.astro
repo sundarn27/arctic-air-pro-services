@@ -1,0 +1,42 @@
+---
+import type { Testimonial } from "@data/testimonials";
+import Icon from "./Icon.astro";
+
+interface Props {
+  testimonial: Testimonial;
+}
+
+const { testimonial } = Astro.props;
+
+const initials = testimonial.name
+  .split(" ")
+  .map((n) => n[0])
+  .join("")
+  .slice(0, 2);
+---
+
+<figure class="card-surface flex h-full flex-col p-6 sm:p-7" data-reveal>
+  <div class="flex items-center gap-0.5" aria-hidden="true">
+    {Array.from({ length: 5 }).map((_, i) => (
+      <Icon
+        name="star"
+        class={`h-4 w-4 ${i < testimonial.rating ? "fill-accent-500 text-accent-500" : "text-mist-300"}`}
+      />
+    ))}
+  </div>
+  <span class="sr-only">{testimonial.rating} out of 5 stars</span>
+
+  <blockquote class="mt-4 flex-1 text-sm leading-relaxed text-mist-700">
+    “{testimonial.review}”
+  </blockquote>
+
+  <figcaption class="mt-6 flex items-center gap-3 border-t border-mist-200 pt-4">
+    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-navy-900 text-xs font-bold text-white">
+      {initials}
+    </div>
+    <div>
+      <p class="text-sm font-semibold text-navy-900">{testimonial.name}</p>
+      <p class="text-xs text-mist-500">{testimonial.service} · {testimonial.location}</p>
+    </div>
+  </figcaption>
+</figure>

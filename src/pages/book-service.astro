@@ -1,0 +1,274 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Breadcrumbs from "@components/astro/Breadcrumbs.astro";
+import SectionHeading from "@components/astro/SectionHeading.astro";
+import Icon from "@components/astro/Icon.astro";
+import CallButton from "@components/astro/CallButton.astro";
+import WhatsAppButton from "@components/astro/WhatsAppButton.astro";
+import { services } from "@data/services";
+import { business, siteMeta } from "@config/business";
+import { buildBreadcrumbSchema } from "@utils/seo";
+
+const canonical = new URL("/book-service", siteMeta.siteUrl).toString();
+const breadcrumbItems = [{ name: "Home", href: "/" }, { name: "Book Service" }];
+const structuredData = [
+  buildBreadcrumbSchema([
+    { name: "Home", url: siteMeta.siteUrl },
+    { name: "Book Service", url: canonical },
+  ]),
+];
+
+const acTypes = ["Split", "Window", "Cassette", "Ducted", "Commercial"];
+const timeSlots = ["Morning (8 AM – 12 PM)", "Afternoon (12 PM – 4 PM)", "Evening (4 PM – 9 PM)", "Emergency (ASAP)"];
+const today = new Date().toISOString().split("T")[0];
+---
+
+<Layout
+  title={`Book AC Service | ${siteMeta.siteName}`}
+  description="Book AC installation, repair, maintenance or cleaning with ArcticAir Pro Services. Demo booking form — no real appointment is created."
+  canonical={canonical}
+  structuredData={structuredData}
+>
+  <section class="border-b border-mist-200 bg-navy-950 py-16 sm:py-20">
+    <div class="container-wide">
+      <Breadcrumbs dark items={breadcrumbItems} />
+      <div class="mt-6 max-w-2xl">
+        <SectionHeading
+          eyebrow="Book Service"
+          title="Schedule your AC service"
+          description="Tell us a bit about your system and issue — a technician will confirm your appointment."
+          dark
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="container-wide py-14 sm:py-20">
+    <div class="grid gap-10 lg:grid-cols-[1fr_0.7fr] lg:gap-14">
+      <div class="card-surface p-6 sm:p-8">
+        <!-- Progress -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-mist-500">
+            <span data-step-label="1" class="text-navy-900">1. Your Details</span>
+            <span data-step-label="2">2. Service Details</span>
+            <span data-step-label="3">3. Schedule</span>
+          </div>
+          <div class="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-mist-200">
+            <div id="booking-progress-bar" class="h-full w-1/3 rounded-full bg-accent-500 transition-[width] duration-500 ease-out"></div>
+          </div>
+        </div>
+
+        <form id="booking-form" novalidate>
+          <!-- Step 1 -->
+          <fieldset data-step="1" class="space-y-5">
+            <legend class="sr-only">Your details</legend>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label for="name" class="text-sm font-medium text-navy-800">Full Name <span aria-hidden="true">*</span></label>
+                <input id="name" name="name" type="text" required autocomplete="name" class="mt-1.5 w-full rounded-md border border-mist-300 px-4 py-3 text-sm text-navy-900 outline-none transition-colors focus:border-ice-500" />
+              </div>
+              <div>
+                <label for="phone" class="text-sm font-medium text-navy-800">Phone Number <span aria-hidden="true">*</span></label>
+                <input id="phone" name="phone" type="tel" required autocomplete="tel" class="mt-1.5 w-full rounded-md border border-mist-300 px-4 py-3 text-sm text-navy-900 outline-none transition-colors focus:border-ice-500" />
+              </div>
+            </div>
+            <div>
+              <label for="email" class="text-sm font-medium text-navy-800">Email Address <span aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" required autocomplete="email" class="mt-1.5 w-full rounded-md border border-mist-300 px-4 py-3 text-sm text-navy-900 outline-none transition-colors focus:border-ice-500" />
+            </div>
+            <fieldset>
+              <legend class="text-sm font-medium text-navy-800">Preferred Contact Method <span aria-hidden="true">*</span></legend>
+              <div class="mt-2 flex flex-wrap gap-3">
+                {["Phone", "WhatsApp", "Email"].map((method, i) => (
+                  <label class="flex cursor-pointer items-center gap-2 rounded-md border border-mist-300 px-4 py-2.5 text-sm font-medium text-navy-700 has-[:checked]:border-navy-900 has-[:checked]:bg-navy-950 has-[:checked]:text-white">
+                    <input type="radio" name="contactMethod" value={method} required class="sr-only" checked={i === 0} />
+                    {method}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <div class="flex justify-end pt-2">
+              <button type="button" data-next class="inline-flex items-center gap-2 rounded-md bg-navy-950 px-6 py-3 text-sm font-semibold text-white hover:bg-navy-900">
+                Continue <Icon name="arrow-right" class="h-4 w-4" />
+              </button>
+            </div>
+          </fieldset>
+
+          <!-- Step 2 -->
+          <fieldset data-step="2" class="hidden space-y-5">
+            <legend class="sr-only">Service details</legend>
+            <div>
+              <label for="acType" class="text-sm font-medium text-navy-800">AC Type <span aria-hidden="true">*</span></label>
+              <select id="acType" name="acType" required class="mt-1.5 w-full rounded-md border border-mist-300 bg-white px-4 py-3 text-sm text-navy-900 outline-none focus:border-ice-500">
+                <option value="" disabled selected>Select AC type</option>
+                {acTypes.map((t) => <option value={t}>{t}</option>)}
+              </select>
+            </div>
+            <div>
+              <label for="service" class="text-sm font-medium text-navy-800">Service Needed <span aria-hidden="true">*</span></label>
+              <select id="service" name="service" required class="mt-1.5 w-full rounded-md border border-mist-300 bg-white px-4 py-3 text-sm text-navy-900 outline-none focus:border-ice-500">
+                <option value="" disabled selected>Select a service</option>
+                {services.map((s) => <option value={s.title}>{s.title}</option>)}
+              </select>
+            </div>
+            <div>
+              <label for="address" class="text-sm font-medium text-navy-800">Service Address <span aria-hidden="true">*</span></label>
+              <input id="address" name="address" type="text" required autocomplete="street-address" placeholder="Street, area, city" class="mt-1.5 w-full rounded-md border border-mist-300 px-4 py-3 text-sm text-navy-900 outline-none focus:border-ice-500" />
+            </div>
+            <div>
+              <label for="problem" class="text-sm font-medium text-navy-800">Problem Description</label>
+              <textarea id="problem" name="problem" rows="4" placeholder="Briefly describe the issue (optional)" class="mt-1.5 w-full resize-none rounded-md border border-mist-300 px-4 py-3 text-sm text-navy-900 outline-none focus:border-ice-500"></textarea>
+            </div>
+            <div class="flex justify-between pt-2">
+              <button type="button" data-back class="inline-flex items-center gap-2 rounded-md border border-mist-300 px-6 py-3 text-sm font-semibold text-navy-800 hover:bg-mist-100">
+                Back
+              </button>
+              <button type="button" data-next class="inline-flex items-center gap-2 rounded-md bg-navy-950 px-6 py-3 text-sm font-semibold text-white hover:bg-navy-900">
+                Continue <Icon name="arrow-right" class="h-4 w-4" />
+              </button>
+            </div>
+          </fieldset>
+
+          <!-- Step 3 -->
+          <fieldset data-step="3" class="hidden space-y-5">
+            <legend class="sr-only">Schedule</legend>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label for="date" class="text-sm font-medium text-navy-800">Preferred Date <span aria-hidden="true">*</span></label>
+                <input id="date" name="date" type="date" required min={today} class="mt-1.5 w-full rounded-md border border-mist-300 px-4 py-3 text-sm text-navy-900 outline-none focus:border-ice-500" />
+              </div>
+              <div>
+                <label for="time" class="text-sm font-medium text-navy-800">Preferred Time <span aria-hidden="true">*</span></label>
+                <select id="time" name="time" required class="mt-1.5 w-full rounded-md border border-mist-300 bg-white px-4 py-3 text-sm text-navy-900 outline-none focus:border-ice-500">
+                  <option value="" disabled selected>Select time window</option>
+                  {timeSlots.map((t) => <option value={t}>{t}</option>)}
+                </select>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-2.5 rounded-lg border border-ice-200 bg-ice-50 p-4 text-xs leading-relaxed text-navy-700">
+              <Icon name="badge" class="mt-0.5 h-4 w-4 flex-shrink-0 text-ice-600" />
+              <p>
+                This is a portfolio demo booking form. Submitting it does <strong>not</strong> create a real
+                appointment — no data is sent to a live booking system.
+              </p>
+            </div>
+
+            <div class="flex justify-between pt-2">
+              <button type="button" data-back class="inline-flex items-center gap-2 rounded-md border border-mist-300 px-6 py-3 text-sm font-semibold text-navy-800 hover:bg-mist-100">
+                Back
+              </button>
+              <button type="submit" class="inline-flex items-center gap-2 rounded-md bg-accent-500 px-6 py-3 text-sm font-semibold text-navy-950 hover:bg-accent-400">
+                Submit Booking Request <Icon name="check" class="h-4 w-4" />
+              </button>
+            </div>
+          </fieldset>
+        </form>
+
+        <!-- Confirmation -->
+        <div id="booking-confirmation" class="hidden text-center" role="status">
+          <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-ice-50 text-ice-600">
+            <Icon name="check" class="h-7 w-7" />
+          </span>
+          <h3 class="mt-4 text-xl font-semibold text-navy-900">Demo request received</h3>
+          <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-mist-600">
+            This is a demo confirmation only — no real appointment has been booked and no data was submitted to a
+            live system. In production this would notify our dispatch team.
+          </p>
+          <button type="button" id="booking-reset" class="mt-6 inline-flex items-center gap-2 rounded-md border border-mist-300 px-5 py-2.5 text-sm font-semibold text-navy-800 hover:bg-mist-100">
+            Submit another request
+          </button>
+        </div>
+      </div>
+
+      <aside class="space-y-6">
+        <div class="card-surface p-6">
+          <h3 class="text-sm font-semibold uppercase tracking-wide text-mist-500">Prefer to talk?</h3>
+          <div class="mt-4 flex flex-col gap-3">
+            <CallButton variant="text" class="justify-start px-0" />
+            <WhatsAppButton variant="text" class="justify-start px-0" />
+          </div>
+        </div>
+        <div class="card-surface p-6">
+          <h3 class="text-sm font-semibold uppercase tracking-wide text-mist-500">Business Hours</h3>
+          <ul class="mt-4 space-y-2 text-sm text-navy-700">
+            {business.hours.map((h) => (
+              <li class="flex items-center justify-between">
+                <span>{h.days}</span>
+                <span class="font-medium">{h.hours}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="rounded-xl border border-ice-200 bg-ice-50 p-6 text-sm leading-relaxed text-navy-700">
+          Need it fixed right now? Use our <a href="/services/emergency-ac-service" class="font-semibold text-ice-700 underline">emergency service</a> instead of the standard booking flow.
+        </div>
+      </aside>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const form = document.getElementById("booking-form") as HTMLFormElement | null;
+  const confirmation = document.getElementById("booking-confirmation");
+  const progressBar = document.getElementById("booking-progress-bar");
+  const resetBtn = document.getElementById("booking-reset");
+
+  const steps = Array.from(document.querySelectorAll<HTMLFieldSetElement>("[data-step]"));
+  const stepLabels = Array.from(document.querySelectorAll<HTMLElement>("[data-step-label]"));
+  let current = 1;
+
+  function showStep(step: number) {
+    steps.forEach((el) => {
+      const isMatch = Number(el.dataset.step) === step;
+      el.classList.toggle("hidden", !isMatch);
+    });
+    stepLabels.forEach((el) => {
+      const isActiveOrDone = Number(el.dataset.stepLabel) <= step;
+      el.classList.toggle("text-navy-900", isActiveOrDone);
+      el.classList.toggle("text-mist-500", !isActiveOrDone);
+    });
+    if (progressBar) progressBar.style.width = `${(step / 3) * 100}%`;
+    current = step;
+  }
+
+  function currentStepValid(): boolean {
+    const active = steps.find((el) => Number(el.dataset.step) === current);
+    if (!active) return true;
+    const fields = Array.from(active.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("input, select, textarea"));
+    let valid = true;
+    fields.forEach((field) => {
+      if (!field.checkValidity()) {
+        valid = false;
+        field.reportValidity();
+      }
+    });
+    return valid;
+  }
+
+  document.querySelectorAll("[data-next]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (currentStepValid()) showStep(Math.min(current + 1, 3));
+    });
+  });
+
+  document.querySelectorAll("[data-back]").forEach((btn) => {
+    btn.addEventListener("click", () => showStep(Math.max(current - 1, 1)));
+  });
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!currentStepValid()) return;
+    form.classList.add("hidden");
+    confirmation?.classList.remove("hidden");
+  });
+
+  resetBtn?.addEventListener("click", () => {
+    form?.reset();
+    confirmation?.classList.add("hidden");
+    form?.classList.remove("hidden");
+    showStep(1);
+  });
+
+  document.addEventListener("astro:page-load", () => showStep(1));
+</script>

@@ -1,0 +1,55 @@
+---
+import type { PricingPlan } from "@data/pricing";
+import Icon from "./Icon.astro";
+import Button from "./Button.astro";
+import { cn } from "@utils/cn";
+
+interface Props {
+  plan: PricingPlan;
+}
+
+const { plan } = Astro.props;
+---
+
+<div
+  class={cn(
+    "relative flex flex-col rounded-xl border p-7 transition-all duration-500",
+    plan.highlighted
+      ? "border-navy-900 bg-navy-950 text-white shadow-[0_25px_60px_-20px_rgba(5,11,22,0.55)] lg:-translate-y-3"
+      : "card-surface hover:-translate-y-1",
+  )}
+  data-reveal
+>
+  {plan.highlighted && (
+    <span class="absolute -top-3 left-7 rounded-full bg-accent-500 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wide text-navy-950">
+      Most Popular
+    </span>
+  )}
+  <h3 class={cn("text-lg font-semibold", plan.highlighted ? "text-white" : "text-navy-900")}>{plan.name}</h3>
+  <p class={cn("mt-2 text-sm leading-relaxed", plan.highlighted ? "text-ice-100/75" : "text-mist-600")}>{plan.description}</p>
+
+  <div class="mt-6 flex items-baseline gap-2">
+    <span class={cn("text-3xl font-bold", plan.highlighted ? "text-white" : "text-navy-900")}>{plan.price}</span>
+    <span class={cn("text-xs font-medium uppercase tracking-wide", plan.highlighted ? "text-ice-200/70" : "text-mist-500")}>
+      {plan.priceNote}
+    </span>
+  </div>
+
+  <ul class="mt-6 flex-1 space-y-3">
+    {plan.features.map((feature) => (
+      <li class="flex items-start gap-2.5 text-sm">
+        <Icon name="check" class={cn("mt-0.5 h-4 w-4 flex-shrink-0", plan.highlighted ? "text-accent-400" : "text-ice-600")} />
+        <span class={plan.highlighted ? "text-ice-100/90" : "text-mist-700"}>{feature}</span>
+      </li>
+    ))}
+  </ul>
+
+  <Button
+    href="/book-service"
+    variant={plan.highlighted ? "primary" : "secondary"}
+    class="mt-8 w-full"
+    icon="arrow-right"
+  >
+    {plan.ctaLabel}
+  </Button>
+</div>
